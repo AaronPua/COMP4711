@@ -17,13 +17,26 @@
                 echo '<table cols="3" style = "font-size: large; font-weight:bold">';
                 echo '<tr>';
                 for ($pos = 0; $pos < 9; $pos++) {
-                    echo '<td>-</td>';
+                    echo $this->show_cell($pos);
                     if ($pos % 3 == 2) {
                         echo '</tr><tr>';
                     }
                 }
                 echo '</tr>';
                 echo '</table>';
+            }
+            
+            function show_cell($which) {
+                $token = $this->position[$which];
+                if($token <> '-') {
+                    return '<td>'.$token.'</td>'; 
+                }
+                $this -> newposition = $this->position;
+                $this -> newposition[$which] = 'o';
+                $move = implode($this->newposition);
+                $link = '/repo/index.php?board='.$move;
+                return '<td><a href="'.$link.'">-</a></td>';
+                
             }
             
             function winner($token) {
@@ -62,6 +75,7 @@
             $squares = $_GET['board'];
             $game = new Game($squares);
             
+            $game->display();
             if($game->winner('x')) {
                 echo 'You win, lucky guesses.';
             } else if ($game->winner('o')) {
