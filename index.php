@@ -5,14 +5,16 @@
         <title></title>
     </head>
     <body>
-        <?php            
+        <?php
+        //Main class for tic-tac-toe game
         class Game {
+            //The 9 positions that you can select
             var $position;
-            
+            //Assigning slots to squares
             function __construct($squares) {
                 $this->position = str_split($squares);
             }
-            
+            //Display the 9 squares based on the URL input
             function display() {
                 echo '<table cols="3" style = "font-size: large; font-weight:bold">';
                 echo '<tr>';
@@ -26,6 +28,7 @@
                 echo '</table>';
             }
             
+            //Shows the cell, draws a link that assigns the url if its empty 
             function show_cell($which) {
                 $token = $this->position[$which];
                 if($token <> '-') {
@@ -39,6 +42,17 @@
                 
             }
             
+            //Assign the next empty spot to x
+            function select_move() {
+                for($i = 0; $i < 9; $i++) {
+                    if($this->position[$i] == '-') {
+                        $this->position[$i] = 'x';
+                        break;
+                    }
+                }
+            }
+            
+            //Check to see who won the game
             function winner($token) {
                 $result = true;
                 for ($column = 0; $column < 3; $column++) {
@@ -75,7 +89,9 @@
             $squares = $_GET['board'];
             $game = new Game($squares);
             
+            $game->select_move();
             $game->display();
+            
             if($game->winner('x')) {
                 echo 'You win, lucky guesses.';
             } else if ($game->winner('o')) {
